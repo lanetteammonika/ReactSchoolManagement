@@ -85,6 +85,6 @@ project.xcworkspace
 #
 build/
 .idea
-.gradle
+.gradle/
 local.properties
 *.iml
