@@ -112,9 +112,9 @@ class Report extends Component {
                 // success
             })
             .catch(error => {
-                debugger
+
 console.log(error)  ;
-                debugger
+
                 // error
             });
     }
@@ -229,7 +229,7 @@ const styles={
     }
 };
 const mapStateToProps=(state)=>{
-    debugger;
+
     return{
         fileDetail:state.file.fileDetail
     }

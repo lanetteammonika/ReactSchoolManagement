@@ -14,7 +14,6 @@ class DisplayUser extends Component {
     }
 
     displayUser=()=>{
-        debugger;
         this.props.getUsers();
     };
 
@@ -23,7 +22,6 @@ class DisplayUser extends Component {
     };
 
     updateUserData=(id)=>{
-        debugger;
         this.props.updateUserDetail(id).then((r)=>{
             console.log("Done");
         }).catch(err=>{
@@ -56,7 +54,6 @@ class DisplayUser extends Component {
 
     render() {
         let userData = _.filter(this.props.userDetail, {user_role:this.props.role});
-        debugger;
         return (
             <View style={{backgroundColor:'white',flex:1}}>
                 <FlatList

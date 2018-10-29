@@ -137,7 +137,7 @@ const styles={
     }
 };
 const mapStateToProps=(state)=>{
-    debugger;
+
     return{
         fileDetail:state.file.fileDetail
     }

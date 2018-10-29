@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,Image,SafeAreaView,TouchableOpacity,ScrollView,ImageBackground,Alert} from 'react-native';
+import {Text,View,Image,SafeAreaView,TouchableOpacity,ScrollView,ImageBackground,Alert,AsyncStorage} from 'react-native';
 import {CardSection,Card,Input,Button,Header} from './common/Common';
 import Color from './../helper/theme/Color';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,9 +12,11 @@ import Contants from '../component/Global';
 class Login extends Component {
     constructor(props){
         super(props);
+
+
         this.state={
-            email:process.env.NODE_ENV === 'development' && 'jarul@gmail.com' || '',
-            password:process.env.NODE_ENV === 'development' && '' || 'jarul',
+            email:process.env.NODE_ENV === 'development' && '' || '',
+            password:process.env.NODE_ENV === 'development' && '' || '',
             emailError:'',
             passwordError:'',
             iconError:'',
@@ -27,6 +29,7 @@ class Login extends Component {
     onBackButtonPress=()=>{
         this.props.navigation.goBack();
     };
+    user_type;
     validateUser=()=>{
 
         if(emailEmpty(this.state.email)){
@@ -45,30 +48,32 @@ class Login extends Component {
                 password:this.state.password
             };
             this.props.loginUser(data).then((res)=>{
-                const name=res.username;
-                const role=res.user_role;
-                this.setState({userData:res});
+
+                const status = res.status;
+
+                this.state.userData = res.response
+
                 console.log("====");
                 console.log(this.state.userData);
                 console.log("====");
-                if(res.msg == 'Not verified'){
-                    this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
-                }
-                else {
-                if(role === 'admin'){
-                    this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
-                }else if(role === 'teacher'){
-                   this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
-                }else {
-                    this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
-                }}
 
+                AsyncStorage.setItem('username', this.state.userData.email);
+
+                if(res.status == 200){
+                    if (this.props.userDetail.user_type == 'Admin'){
+                        this.props.navigation.navigate('Tab');
+                    }else if (this.props.userDetail.user_type == 'Teacher'){
+                        this.props.navigation.navigate('TeacherTab');
+                    }else{
+                        this.props.navigation.navigate('ParentTab');
+                    }
+                }
             }).catch((err)=>{
+                debugger
                 console.log(err);
                 alert("Invalid user");
             })
         }
-
     };
 
     render(){
@@ -117,8 +122,6 @@ class Login extends Component {
                                 selectedIcon='security'
                                 imageType = 'MaterialCommunityIcons'
                             />
-                            {this.state.passwordError !=="" &&
-                            <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.passwordError}</Text>}
                         </CardSection>
 
 
@@ -194,7 +197,9 @@ const styles={
         paddingTop:10,
     },
 };
-const mapStateToProps=()=>{
-    return{};
+const mapStateToProps = state =>{
+    return {
+        userDetail: state.user.userDetail
+    };
 };
 export default connect(mapStateToProps,{loginUser})(Login);

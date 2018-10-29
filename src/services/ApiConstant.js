@@ -1,8 +1,8 @@
 module.exports={
     //baseUrl:'http://localhost:3000/',
-    baseUrl:'http://202.47.116.116:3300/',
-    signUp:'user',
-    login:'/login',
+    baseUrl:'http://localhost:3300/',
+    login:'users/loginUser',
+    signUp:'users/',
     signIn:'stud',
     upload:'file',
     attendance:'attendance'

@@ -33,7 +33,7 @@ class Student extends Component{
             parent_mno:this.state.pmno
         };
         this.props.newStudent(data).then((r)=>{
-            debugger;
+
             this.setState({name:'',gender:1,bdate:'',pname:'',pmno:''});
             alert("New Student Successfully added");
         }).catch((err)=>{
@@ -41,7 +41,7 @@ class Student extends Component{
             })
     };
     render(){
-        //debugger;
+
         return(
             <SafeAreaView style={{flex:1,backgroundColor: 'white'}}>
             <ScrollView>

@@ -42,7 +42,7 @@ class AttendanceStudent extends Component {
         this.getData();
     }
     attendanceData=(id,val)=>{
-        debugger;
+
         const data={
             status:val,
             student_id:id,
@@ -55,7 +55,7 @@ class AttendanceStudent extends Component {
         })
     };
     renderRow = ({item, index}) => {
-        debugger
+
         console.log('attendancedata')
         console.log(item)
         return(

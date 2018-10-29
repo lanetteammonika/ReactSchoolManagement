@@ -12,8 +12,16 @@ import {createStackNavigator} from 'react-navigation';
 import Report from './../../component/Report';
 import Timetable from './../../component/Timetable';
 import GetStart from './../../component/getStarted';
+import Account from './../../component/Account';
+import InitVIew from './../../component/loginModule/InitVIew';
+
+
+
 const stack = createStackNavigator(
     {
+        InitialView:{
+            screen:InitVIew
+        },
         Login:{
             screen:Login
         },
@@ -49,10 +57,14 @@ const stack = createStackNavigator(
         },
         GetStart:{
             screen:GetStart
+        },
+        Account:{
+            screen:Account
         }
+
     },
     {
-        initialRouteName:'Login',
+        initialRouteName:'InitialView',
         headerMode:'none'
     }
 );

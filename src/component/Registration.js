@@ -249,33 +249,106 @@ class Login extends Component {
             Alert.alert('Please enter password')
         }
         else {
-            const data={
-                email:this.state.email,
-                password:this.state.password
-            };
-            this.props.loginUser(data).then((res)=>{
-                const name=res.username;
-                const role=res.user_role;
-                this.setState({userData:res});
+
+            //alert(this.state.usertype);
+            // const data={
+            //     first_name:this.state.firstName,
+            //     last_name:this.state.lastName,
+            //     email:this.state.email,
+            //     password:this.state.password,
+            //     mobile_no:this.state.mobile_no,
+            //     profile_pic:'',
+            //     DOB:this.state.dob,
+            //     user_type:this.state.role,
+            // };
+
+
+            const data= new FormData();
+            data.append('first_name',this.state.firstName);
+            data.append('last_name',this.state.lastName);
+            data.append('email',this.state.email);
+            data.append('password',this.state.password);
+            data.append('mobile_no',this.state.phoneNumber);
+            data.append('DOB','2018/05/05');
+            data.append('user_type',this.state.role);
+            data.append('profile_pic', '');
+
+
+
+            // this.props.loginUser(data).then((res)=>{
+            //     const name=res.username;
+            //     // const role=res.user_role;
+            //     // this.setState({userData:res});
+            //     // console.log("====");
+            //     // console.log(this.state.userData);
+            //     // console.log("====");
+            //     // if(res.msg == 'Not verified'){
+            //     //     this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
+            //     // }
+            //     // else {
+            //     //     if(role === 'admin'){
+            //     //         this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
+            //     //     }else if(role === 'teacher'){
+            //     //         this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
+            //     //     }else {
+            //     //         this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
+            //     //     }}
+            //
+            // }).catch((err)=>{
+            //     console.log(err);
+            //     alert("Invalid user");
+            // })
+
+
+            //alert(this.state.name+this.state.email+this.state.password+this.state.mno+this.state.usertype);
+            this.props.registrationUser(data).then((res)=>{
+
+                debugger
+                const status = res.status;
+
                 console.log("====");
                 console.log(this.state.userData);
                 console.log("====");
-                if(res.msg == 'Not verified'){
-                    this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
-                }
-                else {
-                    if(role === 'admin'){
-                        this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
-                    }else if(role === 'teacher'){
-                        this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
-                    }else {
-                        this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
-                    }}
 
+                if(res.status == 200){
+                    if(this.props.userDetail.user_type === 'Admin'){
+                        this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
+                    }else if(this.props.userDetail.user_type === 'Teacher'){
+                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
+                        // this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
+                    }else {
+                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
+                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
+                    }
+                }
             }).catch((err)=>{
-                console.log(err);
-                alert("Invalid user");
-            })
+                debugger
+                alert("error");
+            });
+
+            // this.props.loginUser(data).then((res)=>{
+            //     const name=res.username;
+            //     const role=res.user_role;
+            //     this.setState({userData:res});
+            //     console.log("====");
+            //     console.log(this.state.userData);
+            //     console.log("====");
+            //     if(res.msg == 'Not verified'){
+            //         this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
+            //     }
+            //     else {
+            //         if(role === 'admin'){
+            //             this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
+            //         }else if(role === 'teacher'){
+            //             this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
+            //         }else {
+            //             this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
+            //         }}
+            //
+            // }).catch((err)=>{
+            //     console.log(err);
+            //     alert("Invalid user");
+            // })
         }
 
     };
@@ -471,6 +544,6 @@ const styles={
 const mapStateToProps=()=>{
     return{};
 };
-export default connect(mapStateToProps,{loginUser})(Login);
+export default connect(mapStateToProps,{loginUser,registrationUser})(Login);
 
 

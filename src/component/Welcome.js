@@ -2,20 +2,20 @@ import React,{Component} from 'react';
 import {Text,View,Image,Dimensions,SafeAreaView,ScrollView,TouchableOpacity} from 'react-native';
 import Color from './../helper/theme/Color';
 import {Header} from './common/Common';
+import connect from "react-redux/es/connect/connect";
+import {logout} from "../actions/LoginAction";
 
 class Welcome extends Component{
     constructor(props){
         super(props);
-        this.state={
-            uname:props.navigation.state.params.name ||''
-        }
     }
+
     render(){
         const {loginImageStyle,childViewStyle,buttonStyle,textStyle,imgTextStyle}=styles;
         return(
         <SafeAreaView style={{backgroundColor:'white',flex:1}}>
             <Header headerText="Home" headIcon="home"/>
-            <Text style={imgTextStyle}>Welcome {this.state.uname}..!</Text>
+            <Text style={imgTextStyle}>Welcome {this.props.userDetail && this.props.userDetail.response.first_name}..!</Text>
             <ScrollView
                 horizontal={true}
                 style={styles.viewStyle}
@@ -85,4 +85,14 @@ const styles={
         alignItems:'center',
     }
 };
-export default Welcome;
+// export default Welcome;
+
+
+
+const mapStateToProps = (state) => {
+    return {
+        userDetail: state.user.userDetail
+    };
+};
+
+export default connect(mapStateToProps)(Welcome);
