@@ -12,6 +12,9 @@ import {createStackNavigator} from 'react-navigation';
 import Report from './../../component/Report';
 import Timetable from './../../component/Timetable';
 import GetStart from './../../component/getStarted';
+import NotesList from './../../component/NotesList';
+import NewsList from './../../component/NewsList';
+
 const stack = createStackNavigator(
     {
         Login:{
@@ -49,6 +52,12 @@ const stack = createStackNavigator(
         },
         GetStart:{
             screen:GetStart
+        },
+        NotesList:{
+            screen:NotesList
+        },
+        NewsList:{
+            screen:NewsList
         }
     },
     {

@@ -13,8 +13,8 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state={
-            email:process.env.NODE_ENV === 'development' && 'jarul@gmail.com' || '',
-            password:process.env.NODE_ENV === 'development' && '' || 'jarul',
+            email:process.env.NODE_ENV === 'development' && 'teacher@gmail.com' || '',
+            password:process.env.NODE_ENV === 'development' && '' || 'teacher',
             emailError:'',
             passwordError:'',
             iconError:'',
@@ -44,9 +44,10 @@ class Login extends Component {
                 email:this.state.email,
                 password:this.state.password
             };
+            debugger
             this.props.loginUser(data).then((res)=>{
                 const name=res.username;
-                const role=res.user_role;
+                const role=res.response.user_type;
                 this.setState({userData:res});
                 console.log("====");
                 console.log(this.state.userData);
@@ -55,9 +56,10 @@ class Login extends Component {
                     this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
                 }
                 else {
-                if(role === 'admin'){
+                debugger
+                if(role === 'Admin'){
                     this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
-                }else if(role === 'teacher'){
+                }else if(role === 'Teacher'){
                    this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
                 }else {
                     this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
@@ -101,6 +103,7 @@ class Login extends Component {
                                 value={this.state.email}
                                 selectedIcon='email'
                                 imageType = 'MaterialCommunityIcons'
+                                textcolor = '#FFF'
                             />
                             {this.state.emailError !=="" &&
                             <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.emailError}</Text>}
@@ -116,6 +119,7 @@ class Login extends Component {
                                 password='email'
                                 selectedIcon='security'
                                 imageType = 'MaterialCommunityIcons'
+                                textcolor = '#FFF'
                             />
                             {this.state.passwordError !=="" &&
                             <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.passwordError}</Text>}

@@ -1,13 +1,14 @@
 import {callApi} from '../services/ApiCall';
 import ApiConstant from '../services/ApiConstant'
-import {USER_DETAIL} from "./Type";
+import {NEWS_DETAIL} from "./Type";
 
-export const loginUser=(user)=>{
+export const getAllNews=(note)=>{
     return(dispatch,getState)=>{
-        return callApi(ApiConstant.baseUrl+ApiConstant.login,'post',user,{}).then((res)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.getNews,'get',note,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+           debugger
             return Promise.all([
                 dispatch({
-                    type:USER_DETAIL,
+                    type:NEWS_DETAIL,
                     payload:res.data
                 })
             ]).then(r=>{
@@ -15,6 +16,7 @@ export const loginUser=(user)=>{
             });
         }).catch((err)=>{
             debugger
+            return Promise.reject(res.data)
         })
     }
 

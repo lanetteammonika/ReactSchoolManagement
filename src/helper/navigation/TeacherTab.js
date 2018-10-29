@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from 'react-navigation';
 import Account from './../../component/Account';
 import Welcome from './../../component/Welcome';
 import Files from './../../component/Files';
+import InsertNote from './../../component/InsertNote';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from './../theme/Color';
 export default createBottomTabNavigator(
@@ -19,7 +20,7 @@ export default createBottomTabNavigator(
             })
         },
         Files:{
-            screen:Files,
+            screen:InsertNote,
             navigationOptions: () => ({
                 tabBarIcon: () => (
                     <Icon

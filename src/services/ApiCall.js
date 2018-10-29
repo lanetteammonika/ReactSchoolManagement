@@ -1,5 +1,6 @@
 import axios from 'axios';
 export function callApi(url,type='get',data={},header={}) {
+    debugger
     let reqHeader = Object.assign(header, {"Accept":"application/json", "Content-Type": "application/json"});
     if(type === 'get'){
         debugger;

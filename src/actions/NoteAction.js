@@ -1,13 +1,13 @@
 import {callApi} from '../services/ApiCall';
 import ApiConstant from '../services/ApiConstant'
-import {USER_DETAIL} from "./Type";
+import {NOTE_DETAIL} from "./Type";
 
-export const loginUser=(user)=>{
+export const insertNote=(note)=>{
     return(dispatch,getState)=>{
-        return callApi(ApiConstant.baseUrl+ApiConstant.login,'post',user,{}).then((res)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.insertNote,'post',note,{"Authorization":getState().user.userDetail.token}).then((res)=>{
             return Promise.all([
                 dispatch({
-                    type:USER_DETAIL,
+                    type:NOTE_DETAIL,
                     payload:res.data
                 })
             ]).then(r=>{
@@ -15,6 +15,7 @@ export const loginUser=(user)=>{
             });
         }).catch((err)=>{
             debugger
+            return Promise.reject(res.data)
         })
     }
 

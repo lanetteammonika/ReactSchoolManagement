@@ -1,9 +1,11 @@
 module.exports={
     //baseUrl:'http://localhost:3000/',
-    baseUrl:'http://202.47.116.116:3300/',
+    baseUrl:'http://localhost:3300/',
     signUp:'user',
-    login:'/login',
+    login:'users/loginUser',
     signIn:'stud',
     upload:'file',
-    attendance:'attendance'
+    attendance:'attendance',
+    insertNote:'notes',
+    getNews:'news'
 };
