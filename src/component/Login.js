@@ -44,7 +44,6 @@ class Login extends Component {
                 email:this.state.email,
                 password:this.state.password
             };
-            debugger
             this.props.loginUser(data).then((res)=>{
                 const name=res.username;
                 const role=res.response.user_type;
@@ -56,7 +55,6 @@ class Login extends Component {
                     this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
                 }
                 else {
-                debugger
                 if(role === 'Admin'){
                     this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
                 }else if(role === 'Teacher'){

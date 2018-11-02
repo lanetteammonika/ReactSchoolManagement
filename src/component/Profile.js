@@ -41,7 +41,6 @@ class Profile extends Component{
         this.props.navigation.goBack();
     };
     onUpdate=()=>{
-        debugger;
         const data={
             user_id:this.state.id,
             username:this.state.name,

@@ -3,7 +3,6 @@ import ApiConstant from '../services/ApiConstant'
 import {USER_DETAIL} from "./Type";
 import _ from 'lodash';
 export const registerUser=(user)=>{
-    debugger;
     return(dispatch,getState)=>{
         return callApi(ApiConstant.baseUrl+ApiConstant.signUp,'post',user,{}).then((res)=>{
             dispatch({
@@ -12,39 +11,31 @@ export const registerUser=(user)=>{
             })
 
         }).catch((err)=>{
-            debugger
         })
     }
 
 };
 
 export const getUsers=()=>{
-    debugger;
     return(dispatch,getState)=>{
         return callApi(ApiConstant.baseUrl+ApiConstant.signUp,'get',{},{}).then((res)=>{
-            debugger;
             dispatch({
                 type:USER_DETAIL,
                 payload:res
             });
             return Promise.resolve(res);
         }).catch((err)=>{
-            debugger
         })
     }
 };
 export const updateUserDetail=(id)=>{
     return(dispatch,getState)=>{
-        debugger;
         let userData = getState().user.userDetail;
         let userObject = _.find(userData, {user_id: id});
-        debugger;
         let val=userObject.status;
         if(val==0){
-            debugger;
             val=1;
         }else{
-            debugger;
             val=0;
         }
         let index = _.findIndex(userData, userObject);

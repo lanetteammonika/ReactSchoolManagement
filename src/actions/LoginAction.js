@@ -14,7 +14,6 @@ export const loginUser=(user)=>{
                 return Promise.resolve(res.data)
             });
         }).catch((err)=>{
-            debugger
         })
     }
 

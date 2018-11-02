@@ -37,7 +37,6 @@ class Files extends Component{
             filetype: [DocumentPickerUtil.allFiles()],
         },(error,res) => {
             // Android
-            debugger
             if(res){
                 let name=res.fileName;
                 const type=name.split('.');
@@ -98,7 +97,6 @@ class Files extends Component{
             file_description:this.state.fdesc,
             user_id:this.state.uid.toString()
         };
-        debugger
         const data= new FormData();
         data.append('file_name',data2.file_name);
         data.append('file_type',data2.file_type);
@@ -109,16 +107,13 @@ class Files extends Component{
         console.log(data)
         console.log(data)
         console.log(data)
-        debugger
         console.log(data)
         axios.post('http://202.47.116.116:3300/file',data,{})
             .then((response) => {
-                debugger;
                 console.log(response);
                 //return Promise.resolve(response)
             })
             .catch((err) => {
-                debugger;
                 console.log(err);
                 //return Promise.reject(err);
             });

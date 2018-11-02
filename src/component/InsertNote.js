@@ -20,10 +20,8 @@ class InsertNote extends Component {
 
     onInsertNote = () => {
         this.props.insertNote({title:this.state.title,description:this.state.description}).then((res)=>{
-            debugger
             console.log(res);
         }).catch((err)=>{
-            debugger
             console.log(err);
         })
     }

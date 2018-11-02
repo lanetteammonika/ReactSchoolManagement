@@ -7,5 +7,5 @@ module.exports={
     upload:'file',
     attendance:'attendance',
     insertNote:'notes',
-    getNews:'news'
+    getNotes:'notes'
 };

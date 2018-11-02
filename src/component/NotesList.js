@@ -3,6 +3,9 @@ import {Text,View,Image,Dimensions,SafeAreaView,ScrollView,TouchableOpacity} fro
 import Color from './../helper/theme/Color';
 import {Header} from './common/Common';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import {getAllNotes} from "../actions/NoteAction";
+import {connect} from "react-redux";
+import moment from 'moment'
 
 class NotesList extends Component{
     constructor(props){
@@ -11,6 +14,25 @@ class NotesList extends Component{
             items: {}
         };
     }
+
+    componentDidMount(){
+        this.props.getAllNotes();
+    }
+    componentWillReceiveProps(nextprops){
+        console.log(nextprops.notes);
+        let data = nextprops.notes;
+        let obj = [];
+        data = data.map((item)=>{
+            item.updatedAt = moment(item.updatedAt).format('YYYY-MM-DD');
+            item.createdAt = moment(item.createdAt).format('YYYY-MM-DD');
+            obj[moment(item.updatedAt).format('YYYY-MM-DD')] = item;
+            return item;
+        })
+
+        console.log(obj)
+        debugger
+    }
+
     loadItems(day) {
         setTimeout(() => {
             for (let i = -15; i < 85; i++) {
@@ -136,4 +158,9 @@ const styles={
         alignItems:'center',
     }
 };
-export default NotesList;
+const mapStateToProps=(state)=>{
+    return{
+        notes: state.notes.noteList
+    };
+};
+export default connect(mapStateToProps,{getAllNotes})(NotesList);

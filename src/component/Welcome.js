@@ -8,7 +8,6 @@ import NotesList from './NotesList';
 
 class Welcome extends Component{
     constructor(props){
-        debugger
         super(props);
         this.state={
             index: 0,
@@ -19,7 +18,6 @@ class Welcome extends Component{
         }
     }
     render(){
-        debugger
         return(
             <SafeAreaView style={{backgroundColor:'rgb(12,124,179)',flex:1}}>
                 <ScrollableTabView

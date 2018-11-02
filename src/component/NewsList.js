@@ -16,17 +16,10 @@ class NewsList extends Component{
     }
 
     componentDidMount() {
-        this.props.getAllNews().then((res)=>{
-            debugger;
-        }).catch((err)=>{
-            debugger
-        })
-        console.log(this.props.news);
-        debugger
+
     }
     componentWillReceiveProps() {
         console.log(this.props.news);
-        debugger
     }
     loadItems(day) {
         setTimeout(() => {
