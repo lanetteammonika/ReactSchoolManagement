@@ -209,7 +209,7 @@
 
 
 import React,{Component} from 'react';
-import {Text,View,Image,SafeAreaView,TouchableOpacity,ScrollView,ImageBackground,Alert} from 'react-native';
+import {Text,View,Image,SafeAreaView,TouchableOpacity,ScrollView,ImageBackground,Alert,Picker} from 'react-native';
 import {CardSection,Card,Input,Button,Header} from './common/Common';
 import Color from './../helper/theme/Color';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -217,7 +217,14 @@ import {emailEmpty,passwordEmpty,checkEmail} from './../validation/Validation';
 import {loginUser} from './../actions/LoginAction';
 import {connect} from 'react-redux';
 import Contants from '../component/Global';
+import ModalDropDown from 'react-native-modal-dropdown';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
+import DatePicker from 'react-native-datepicker'
+import {registrationUser} from './../actions/RegistrationAction';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class Login extends Component {
     constructor(props){
@@ -225,6 +232,7 @@ class Login extends Component {
         this.state={
             firstName: '',
             lastName:'',
+            email:'',
             password:'',
             address:'',
             phoneNumber:'',
@@ -238,15 +246,24 @@ class Login extends Component {
     };
     validateUser=()=>{
 
-        if(emailEmpty(this.state.email)){
-            // this.setState({iconError:'exclamation-circle',emailError:'Require',passwordError:'Require'});
-            Alert.alert('Please enter email address')
+        if(emailEmpty(this.state.firstName)){
+            Alert.alert('Please enter first name')
+        }else if(emailEmpty(this.state.lastName)){
+            Alert.alert('Please enter last name')
+        }else if(emailEmpty(this.state.email)){
+            Alert.alert('Please enter email')
         }else if(!checkEmail(this.state.email)){
             Alert.alert('Please enter valid email address')
-        }
-        else if( passwordEmpty(this.state.password)){
-            // this.setState({iconError:'exclamation-circle',emailError:'Require',passwordError:'Require'});
+        }else if(emailEmpty(this.state.password)){
             Alert.alert('Please enter password')
+        }else if( passwordEmpty(this.state.phoneNumber)){
+            Alert.alert('Please enter phone number')
+        }else if( passwordEmpty(this.state.address)){
+            Alert.alert('Please enter address')
+        }else if( passwordEmpty(this.state.dob)){
+            Alert.alert('Please select date of birth')
+        }else if( passwordEmpty(this.state.role)){
+            Alert.alert('Please select role')
         }
         else {
 
@@ -272,57 +289,23 @@ class Login extends Component {
             data.append('DOB','2018/05/05');
             data.append('user_type',this.state.role);
             data.append('profile_pic', '');
-
-
-
-            // this.props.loginUser(data).then((res)=>{
-            //     const name=res.username;
-            //     // const role=res.user_role;
-            //     // this.setState({userData:res});
-            //     // console.log("====");
-            //     // console.log(this.state.userData);
-            //     // console.log("====");
-            //     // if(res.msg == 'Not verified'){
-            //     //     this.setState({loginMsg:'Your account not verified yet.Wait some time.'})
-            //     // }
-            //     // else {
-            //     //     if(role === 'admin'){
-            //     //         this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
-            //     //     }else if(role === 'teacher'){
-            //     //         this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
-            //     //     }else {
-            //     //         this.props.navigation.navigate('ParentTab',{res,name:res.username,data:this.state.userData});
-            //     //     }}
-            //
-            // }).catch((err)=>{
-            //     console.log(err);
-            //     alert("Invalid user");
-            // })
-
+            data.append('is_active', 1);
 
             //alert(this.state.name+this.state.email+this.state.password+this.state.mno+this.state.usertype);
             this.props.registrationUser(data).then((res)=>{
 
-                debugger
-                const status = res.status;
+                const status = res.statusCode;
 
-                console.log("====");
-                console.log(this.state.userData);
-                console.log("====");
-
-                if(res.status == 200){
-                    if(this.props.userDetail.user_type === 'Admin'){
-                        this.props.navigation.navigate('Tab',{res,name:res.username,data:this.state.userData});
-                    }else if(this.props.userDetail.user_type === 'Teacher'){
-                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
+                if(status == 200){
+                    if(res.response.user_type === 'teacher'){
+                        alert(res.msg ? res.msg : 'Successfully registration your account. You have get mail when admin will approve your profile.');
                         // this.props.navigation.navigate('TeacherTab',{res,name:res.username,data:this.state.userData});
                     }else {
-                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
-                        alert(this.state.userData.msg ? this.state.userData.msg : 'Successfully registration your account. You have get mail when admin will approve your profile');
+                        alert(res.msg ? res.msg : 'Successfully registration your account. You have get mail when admin will approve your profile.');
                     }
+                    this.props.navigation.goBack()
                 }
             }).catch((err)=>{
-                debugger
                 alert("error");
             });
 
@@ -355,8 +338,17 @@ class Login extends Component {
 
     render(){
         const {imgStyle,viewStyle,headStyle,textStyle,linkStyle,newUserStyle,loginImageStyle,buttonStyle}=styles
+
+        const options = [{
+            value: 'Banana',
+        }, {
+            value: 'Mango',
+        }, {
+            value: 'Pear',
+        }]
+
         return(
-            <View>
+            <View style={{flex : 1}}>
                 {/*<Header*/}
                 {/*headerText="Login"*/}
                 {/*headIcon="sign-in"*/}
@@ -369,8 +361,12 @@ class Login extends Component {
                 {/*<Image source={require('./../image/main_BG.jpg')} size={300} style={loginImageStyle} resizeMode="contain"/>*/}
                 {/*</View>*/}
 
-                <ImageBackground source={require('./../image/schoolImage.png')}  style={{width: '100%', height: '100%'}}>
 
+                {/*<KeyboardAwareScrollView style={{flex:1}}>*/}
+                <ImageBackground source={require('./../image/schoolImage.png')}  style={{width: '100%', height: '100%'}}>
+                <KeyboardAwareScrollView >
+
+                    <View >
                     <Image source={require('./../image/app_Icon.png')} style={loginImageStyle} resizeMode="contain"/>
 
                     <Card>
@@ -403,6 +399,19 @@ class Login extends Component {
 
                         <CardSection>
                             <Input
+                                onChange={(value)=>this.setState({email:value,passwordError:''})}
+                                placeholder="Email"
+                                label=""
+                                secureTextEntry={false}
+                                value={this.state.email}
+                                password='email'
+                                selectedIcon='email'
+                                imageType = 'MaterialCommunityIcons'
+                            />
+                        </CardSection>
+
+                        <CardSection>
+                            <Input
                                 onChange={(value)=>this.setState({password:value,passwordError:''})}
                                 placeholder="Password"
                                 label=""
@@ -425,6 +434,7 @@ class Login extends Component {
                                 value={this.state.phoneNumber}
                                 selectedIcon='phone'
                                 imageType = 'AntDesign'
+                                keyboardType={'phone-pad'}
                             />
                             {this.state.emailError !=="" &&
                             <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.emailError}</Text>}
@@ -444,31 +454,92 @@ class Login extends Component {
                         </CardSection>
 
                         <CardSection>
-                            <Input
-                                onChange={(value)=>this.setState({dob:value,emailError:''})}
-                                placeholder="DOB"
-                                label=""
-                                value={this.state.dob}
-                                selectedIcon='date-range'
-                                imageType = 'MaterialIcons'
+                            {/*<Input*/}
+                                {/*onChange={(value)=>this.setState({dob:value,emailError:''})}*/}
+                                {/*placeholder="DOB"*/}
+                                {/*label=""*/}
+                                {/*value={this.state.dob}*/}
+                                {/*selectedIcon='date-range'*/}
+                                {/*imageType = 'MaterialIcons'*/}
+                            {/*/>*/}
+
+                            <MaterialIcons name="date-range" size={30} color="white" />
+
+                            {/*const today = new Date(2016, 2, 15);*/}
+
+
+                            <DatePicker
+                                style={{width: 200,left : 0,backgroundColor : 'transparent'}}
+                                date={this.state.dob}
+                                mode="date"
+                                placeholder="Select Date"
+                                format="YYYY-MM-DD"
+                                minDate="1950-01-01"
+                                maxDate={new Date()}
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                showIcon = {false}
+                                customStyles={{
+                                    placeholderText: {
+                                        color: '#ffffff',
+                                        fontSize : 18,
+                                    },
+                                    dateText:{
+                                        color: '#ffffff',
+                                        fontSize : 18,
+                                    },
+                                    dateIcon: {
+                                        position: 'hide',
+                                        left: 0,
+                                        top: 4,
+                                        marginLeft: 0,
+                                    },
+                                    dateInput: {
+                                        marginLeft: 10 ,
+                                        backgroundColor : 'transparent',
+                                        color : 'white',
+                                        borderColor : 'transparent',
+                                        alignItems:'flex-start',
+                                        placeholderText:'dddfdf',
+                                        textStyle:{fontSize: 30},
+                                    }
+                                    // ... You can check the source to find the other keys.
+                                }}
+                                onDateChange={(date) => {this.setState({dob: date})}}
                             />
-                            {this.state.emailError !=="" &&
-                            <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.emailError}</Text>}
+
                         </CardSection>
 
                         <CardSection>
-                            <Input
-                                onChange={(value)=>this.setState({role:value,emailError:''})}
-                                placeholder="Role"
-                                label=""
-                                value={this.state.role}
-                                selectedIcon='date-range'
-                                imageType = 'MaterialIcons'
-                            />
-                            {this.state.emailError !=="" &&
-                            <Text style={textStyle}><Icon name={this.state.iconError} size={20}/>{this.state.emailError}</Text>}
+                            <Entypo name="users" size={30} color="white" />
+
+                            <ModalDropDown
+                                                                defaultIndex={2}
+                                                                adjustFrame={style => this.drpFrame(style)}
+                                                                style={{
+                                                                    alignSelf:'flex-start',
+                                                                    // height:40,
+                                                                    width:150,
+                                                                    flex:2,
+                                                                    left:10,
+                                                                    top:10,
+                                                                    height: 'auto',
+                                                                }}
+                                                                textStyle={{
+                                                                    fontSize:16,
+                                                                    color:"white"
+                                                                }}
+                                                                options={['Teacher','Parent']}
+                                                                onSelect={(value)=>{
+                                                                    if(value==0){
+                                                                        this.setState({role:'teacher'})
+                                                                    }
+                                                                    else{
+                                                                        this.setState({role:'parent'})
+                                                                    }
+                                                                }}
+                                                            />
                         </CardSection>
-                        
 
                         {/* Login Button */}
                         <View style={buttonStyle}>
@@ -483,16 +554,38 @@ class Login extends Component {
                             </TouchableOpacity>
                         </View>
 
-
                     </Card>
                     <Text style={[textStyle,{alignSelf:'center'}]}>{this.state.loginMsg}</Text>
+                    </View>
+                </KeyboardAwareScrollView>
                 </ImageBackground>
+            {/*</KeyboardAwareScrollView>*/}
             </View>
         );
     };
+
+
+    drpFrame(style) {
+        style.width = 100;
+        style.height = 80;
+        style.bottom = 100;
+        style.marginBottom = 100;
+        style.marginTop = 80;
+        return style;
+    }
+
+
+
 }
 
+
+
+
 const styles={
+    container:{
+        height:80,
+        width:170,
+    },
     textStyle:{
         color:'red',
         fontSize:16
@@ -527,9 +620,8 @@ const styles={
         fontWeight:'bold'
     },
     loginImageStyle:{
-        height:'15%',
-        width:'100%',
-        alignSelf:'center',
+        height:120,
+        width: 120,
         alignSelf:'center',
         marginTop:50,
         marginBottom:0,

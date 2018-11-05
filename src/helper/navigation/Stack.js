@@ -11,10 +11,10 @@ import Lecture from './../../component/Lecture';
 import {createStackNavigator} from 'react-navigation';
 import Report from './../../component/Report';
 import Timetable from './../../component/Timetable';
-import GetStart from './../../component/getStarted';
 import Account from './../../component/Account';
+import GetStart from './../../component/getStarted';
 import InitVIew from './../../component/loginModule/InitVIew';
-
+import AddStudent from "../../component/AddStudent";
 
 
 const stack = createStackNavigator(
@@ -42,6 +42,9 @@ const stack = createStackNavigator(
         },
         Student:{
             screen:Student
+        },
+        AddStudent:{
+            screen:AddStudent
         },
         Help:{
             screen:Help

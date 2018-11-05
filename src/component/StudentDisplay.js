@@ -4,15 +4,19 @@ import Color from './../helper/theme/Color';
 import {Header} from './common/Common';
 import {TabView,TabBar,SceneMap} from 'react-native-tab-view';
 import Student from './StudentDetail';
-import AttendanceStudent from './AttendanceStudent';
+import Parents from './Parents';
+import Teachers from './Teachers';
+
+
 class StudentsDisplay extends Component{
     constructor(props){
         super(props);
         this.state={
             index:0,
             routes: [
-                { key: 'Students', title: 'Students' },
-                { key: 'AttendanceStudent', title: 'Attendance' ,getAccessible:false}
+                { key: 'Teachers', title: 'Teacher' },
+                { key: 'Parents', title: 'Parents' ,getAccessible:false},
+                { key: 'Students', title: 'Student' ,getAccessible:false}
             ]
         }
     }
@@ -23,8 +27,9 @@ class StudentsDisplay extends Component{
                 <TabView navigationState={this.state}
                          onIndexChange={index=>this.setState({index})}
                          renderScene={SceneMap({
+                             Teachers:Teachers,
+                             Parents:Parents,
                              Students:Student,
-                             AttendanceStudent:AttendanceStudent
                          })}
                          style={styles.tabStyle}
                          tabStyle={{backgroundColor:"red"}}

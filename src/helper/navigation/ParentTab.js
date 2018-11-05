@@ -26,7 +26,8 @@ export default createBottomTabNavigator(
                         name="file"
                         size={24}
                     />
-                )
+                ),
+                tabBarLabel:"Note"
             })
         },
         Account:{

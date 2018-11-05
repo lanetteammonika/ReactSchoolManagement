@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,Image,View,SafeAreaView,TouchableOpacity} from 'react-native';
+import {Text,Image,View,SafeAreaView,TouchableOpacity,ImageBackground} from 'react-native';
 import {Header} from './common/Common';
 import Color from './../helper/theme/Color';
 class Help extends Component{
@@ -23,8 +23,11 @@ class Help extends Component{
                     isBack={this.state.isBack}
                     iName={this.state.iName}
                 />
-                <Text style={styles.textStyle}>For any help contact on:</Text>
-                <Text style={styles.textHeadStyle}>+91 7600923449</Text>
+                <ImageBackground source={require('./../image/schoolImage.png')}
+                                 style={{width: '100%', height: '100%'}}>
+                    <Text style={styles.textStyle}>For any help contact on:</Text>
+                    <Text style={styles.textHeadStyle}>+91 7600923449</Text>
+                </ImageBackground>
             </View>
 
 

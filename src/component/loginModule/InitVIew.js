@@ -17,11 +17,13 @@ class InitView extends Component{
     //Call second method will show 222
     componentWillMount(){
 
+        // alert(this.props.userDetail.response.user_type)
+
         const resetAction = StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: this.props.userDetail.user_type  &&
-                    (this.props.userDetail.user_type == 'Teacher' &&
-                        'TeacherTab' || (this.props.userDetail.user_type == 'ParentTab' &&
+            actions: [NavigationActions.navigate({ routeName: this.props.userDetail  &&
+                    (this.props.userDetail.response.user_type == 'Teacher' &&
+                        'TeacherTab' || (this.props.userDetail.response.user_type == 'Parent' &&
                             'ParentTab' || 'Tab')) || 'Login' })],
         });
         this.props.navigation.dispatch(resetAction);

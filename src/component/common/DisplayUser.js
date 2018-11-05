@@ -1,77 +1,280 @@
 import React, {Component} from 'react';
-import {Text, View, FlatList,Image,TouchableOpacity,Alert,Switch} from 'react-native';
+import {Text, View, FlatList,Image,TouchableOpacity,Alert,Switch,Button} from 'react-native';
 import {connect} from 'react-redux';
 import {getUsers,updateUserDetail} from './../../actions/RegistrationAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import _ from 'lodash';
+import {
+    activeByAdmin,
+    attendance,
+    attendanceByAdmin,
+    deleteAdmin,
+    deleteStudent,
+    getStudents
+} from "../../actions/StudentAction";
+import {ATTENDANCE_DETAIL, STUDENT_DETAIL} from "../../actions/Type";
+import {applyMiddleware as dispatch} from "redux";
+import Constant from '../../helper/theme/Value';
+import AttendanceReducer from "../../reducers/AttendanceReducer";
+
+
 class DisplayUser extends Component {
     constructor(props){
         super(props);
         this.state={
             uid:0,
-            activeState:'false'
+            activeState:'false',
+            selectedId : 0,
         }
     }
 
     displayUser=()=>{
-        this.props.getUsers();
+        // this.props.getUsers();
+        this.props.getStudents();
+        this.props.attendance();
     };
 
     componentDidMount=()=>{
         this.displayUser();
     };
 
-    updateUserData=(id)=>{
-        this.props.updateUserDetail(id).then((r)=>{
-            console.log("Done");
-        }).catch(err=>{
-            console.log(err);
-        })
-    };
-    renderRow = ({item, index}) => {
-        return(
-            <View style={{height:50,marginTop:10}} key={index}>
+    /*
+    <View style={{height:50,marginTop:10}} key={index}>
                 {item &&
                 <View style={styles.viewStyle}>
-                    <Text style={styles.textStyle}>{item.username}</Text>
-                        {item.status==1?
+                    <Text style={styles.textStyle}>{`${item.first_name} ${item.last_name}`}</Text>
+                        {item.is_active==1?
                             <Switch value={true}
                                 onValueChange={(value)=>{
                                     this.setState({activeState:value});
-                                    this.updateUserData(item.user_id);
+
+
+                                    //Object
+                                    const data={
+                                        id:item.id,
+                                    };
+
+                                    this.props.deleteAdmin(data).then((r)=>{
+
+                                    }).catch(err=>{
+                                        console.log(err);
+                                    })
+
                                 }}/>:
                             <Switch value={false}
                                     onValueChange={(value)=>{
                                     this.setState({activeState:value});
-                                    this.updateUserData(item.user_id);
+
+
+
+                                        //Object
+                                        const data={
+                                            is_active:'1',
+                                            id:item.id,
+                                            email:item.email
+                                        };
+
+                                        this.props.activeByAdmin(data).then((r)=>{
+
+                                        }).catch(err=>{
+                                            console.log(err);
+                                        })
                                 }}/>}
                     <View style={{paddingRight:5}}></View>
                 </View>
-
                 }
+            </View>)
+     */
+    renderRow = ({item, index}) => {
+
+        let leftColors = ['#fffda4', '#ffb7be', '#69a0e5', '#35ebe9', '#ff8a93', '#685be9', '#a256f1'];
+        let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+
+        // debugger
+        return(
+            <View style={{width:Constant.screenWidth-50, alignSelf:'center',
+                backgroundColor:leftColors[random], height:Constant.screenHeight/8, borderRadius:10, borderWidth:0.5, borderColor:'#bdbdbd'}}>
+                <View style={{flexDirection:'row', alignItems:'center',flex:1, paddingLeft:20,paddingRight:20}}>
+                    <View style={{height:Constant.screenHeight/10,width:Constant.screenHeight/10,
+                        backgroundColor:'#ff0', borderColor:"#000", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}/>
+                    <Text style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}}>{`${item.first_name} ${item.last_name}`}</Text>
+                   {item.is_active==1?
+                        <Switch value={true}
+                                onValueChange={(value)=>{
+                                    this.setState({activeState:value});
+
+                                    //Object
+                                    const data={
+                                        id:item.id,
+                                    };
+
+                                    this.props.deleteAdmin(data).then((r)=>{
+
+                                    }).catch(err=>{
+                                        console.log(err);
+                                    })
+
+                                }}/>:
+                        <Switch value={false}
+                                onValueChange={(value)=>{
+                                    this.setState({activeState:value});
+
+
+                                    //Object
+                                    const data={
+                                        is_active:'1',
+                                        id:item.id,
+                                        email:item.email
+                                    };
+
+                                    this.props.activeByAdmin(data).then((r)=>{
+
+                                    }).catch(err=>{
+                                        console.log(err);
+                                    })
+                                }}/>}
+                </View>
+            </View>)
+    };
+
+    renderRowAttandence = ({item, index}) => {
+
+        let leftColors = ['#fffda4', '#ffb7be', '#69a0e5', '#35ebe9', '#ff8a93', '#685be9', '#a256f1'];
+        let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+
+        // debugger
+        return(
+            <View style={{width:Constant.screenWidth-50, alignSelf:'center',
+                backgroundColor:leftColors[random], height:Constant.screenHeight/8, borderRadius:10, borderWidth:0.5, borderColor:'#bdbdbd'}}>
+                <View style={{flexDirection:'row', alignItems:'center',flex:1, paddingLeft:20,paddingRight:20}}>
+                    <View style={{height:Constant.screenHeight/10,width:Constant.screenHeight/10,
+                        backgroundColor:'#ff0', borderColor:"#000", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}/>
+                    <Text style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}}>{`${item.first_name} ${item.last_name}`}</Text>
+
+
+                    {item.attendence==1?
+                        <View><Text>Present</Text></View>
+                       :
+                        <Button color="Black" underlayColor='#fff' style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}} title = 'Attendanc Now' onPress={(value)=>{
+                            this.setState({activeState:value});
+
+
+                            let str_Temp = ''
+                            if ( Boolean(this.props.attendanceDetail) && Boolean(this.props.attendanceDetail.response)) {
+                                var arrTemp =this.props.attendanceDetail.response.present.split(',');
+
+
+                                for (let j = 0; j < arrTemp.length; j++) {
+                                    if (j == 0){
+                                        str_Temp = arrTemp[j]
+                                    }else{
+                                        str_Temp = str_Temp + ',' + arrTemp[j]
+                                    }
+                                }
+
+                                if (str_Temp == ''){
+                                    str_Temp = item.id
+                                }else{
+                                    str_Temp =  str_Temp  + ',' + item.id
+                                }
+                            }else if (Boolean(this.props.attendanceDetail) && Boolean(this.props.attendanceDetail.data)) {
+                                var arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+
+                                for (let j = 0; j < arrTemp.length; j++) {
+                                    if (j == 0){
+                                        str_Temp = arrTemp[j]
+                                    }else{
+                                        str_Temp = str_Temp + ',' + arrTemp[j]
+                                    }
+                                }
+
+                                if (str_Temp == ''){
+                                    str_Temp = item.id
+                                }else{
+                                    str_Temp =  str_Temp  + ',' + item.id
+                                }
+                            }else {
+                                str_Temp = item.id
+                            }
+
+
+                            //Object
+                            const data={
+                                present:str_Temp,
+                            };
+
+                            this.props.attendanceByAdmin(data).then((r)=>{
+
+                            }).catch(err=>{
+                                console.log(err);
+                            })
+
+                        }}/>
+                    }
+                </View>
             </View>)
     };
 
     render() {
-        let userData = _.filter(this.props.userDetail, {user_role:this.props.role});
+        let studentData = _.filter((this.props.studentDetail )
+            && this.props.studentDetail.response || [], {user_type:this.props.role});
+
+
+        //Manage Attandence Module
+        for (let i=0; i<studentData.length; i++){
+            let obj = studentData[i];
+
+            if (this.props.attendanceDetail && this.props.attendanceDetail.response){
+                var arrTemp = this.props.attendanceDetail.response.present.split(',');
+
+                obj['attendence'] = '0';
+                for (let j=0; j<arrTemp.length; j++){
+                    if (arrTemp[j] == obj['id']){
+                        obj['attendence'] = '1';
+                        break
+                    }
+                }
+                studentData[i] = obj;
+
+            }else if (this.props.attendanceDetail && this.props.attendanceDetail.data){
+                var arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+
+                obj['attendence'] = '0';
+                for (let j=0; j<arrTemp.length; j++){
+                    if (arrTemp[j] == obj['id']){
+                        obj['attendence'] = '1';
+                        break
+                    }
+                }
+                studentData[i] = obj;
+
+            }else{
+                obj['attendence'] = '0';
+                studentData[i] = obj;
+            }
+        }
+
+
         return (
             <View style={{backgroundColor:'white',flex:1}}>
                 <FlatList
-                    data={userData}
-                    renderItem={this.renderRow}
+                    data={studentData}
+                    renderItem={this.props.type == 'Attendance' && this.renderRowAttandence || this.renderRow }
                     keyExtractor={item=>item.username}
+                    // contentInset={this.props.style && this.props.style || {top:10}}
+                    contentContainerStyle={this.props.style && this.props.style || {top: 10}}
+                    automaticallyAdjustContentInsets={false}
+                    removeClippedSubviews={false}
+                    initialNumToRender={10}
+                    ItemSeparatorComponent={(highlighted) => (
+                        <View style={{height : 10}} />
+                    )}
                 />
             </View>
-
         )
     }
-
 }
-const mapStateToProps=(state)=>{
-    return{
-        userDetail:state.user.userDetail
-    }
-};
+
 const styles={
     viewStyle:{
         borderWidth:0.5,
@@ -98,8 +301,24 @@ const styles={
     iconStyle:{
         color:'red',
         paddingRight:5
+    },
+    buttonStyle:{
+        alignItems:'center',
+        justifyContent:'center',
+        paddingTop:50,
+
+    },
+};
+
+
+const mapStateToProps=(state)=>{
+
+    return{
+        studentDetail:state.stud.studentDetail,
+        attendanceDetail:state.attendance.attendanceDetail,
     }
 };
+
 export default connect(mapStateToProps,{
-    getUsers,updateUserDetail
+    getUsers,updateUserDetail,deleteAdmin,activeByAdmin,attendance,attendanceByAdmin,getStudents
 })(DisplayUser);

@@ -8,6 +8,7 @@ import {insertFile} from './../actions/FileAction';
 import {connect} from 'react-redux';
 import {DocumentPicker,DocumentPickerUtil} from 'react-native-document-picker';
 import axios from "axios";
+import {logout} from "../actions/LoginAction";
 class Files extends Component{
     constructor(props){
         super(props);
@@ -17,22 +18,11 @@ class Files extends Component{
             fname:'',
             file:'',
             fdesc:'',
-            uid:props.navigation.state.params.res.user_id ||0,
+            uid:this.props.userDetail.response.id ||0,
             imgName:''
         }
     }
     showPicker=()=>{
-        // DocumentPicker.show({
-        //     filetype: [DocumentPickerUtil.images()],
-        // },(error,res) => {
-        //     // Android
-        //     console.log(
-        //         res.uri,
-        //         res.type, // mime type
-        //         res.fileName,
-        //         res.fileSize
-        //     );
-        // });
         DocumentPicker.show({
             filetype: [DocumentPickerUtil.allFiles()],
         },(error,res) => {
@@ -122,14 +112,6 @@ class Files extends Component{
                 console.log(err);
                 //return Promise.reject(err);
             });
-        // this.props.insertFile(data).then((res)=>{
-        //     debugger;
-        //     alert("File Uploaded Successfully");
-        //     //this.setState({fname:'',fdesc:''});
-        // }).catch((err)=>{
-        //     alert("Failed to upload file");
-        // });
-        //alert(data.file_name + data.file_type + data.file + data.file_description);
 
     };
 
@@ -234,10 +216,12 @@ const styles={
         alignSelf:'center'
     }
 };
-const mapStateToProps=()=>{
+const mapStateToProps=(state)=>{
     return{
+        userDetail: state.user.userDetail
     };
 };
 export default connect(mapStateToProps,{
     insertFile
 })(Files);
+

@@ -3,8 +3,11 @@ import {createBottomTabNavigator} from 'react-navigation';
 import Account from './../../component/Account';
 import Welcome from './../../component/Welcome';
 import Files from './../../component/Files';
+import InsertNote from './../../component/InsertNote';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from './../theme/Color';
+import AttendanceStudent from "../../component/AttendanceStudent";
+
 export default createBottomTabNavigator(
     {
         Home:{
@@ -19,7 +22,7 @@ export default createBottomTabNavigator(
             })
         },
         Files:{
-            screen:Files,
+            screen:InsertNote,
             navigationOptions: () => ({
                 tabBarIcon: () => (
                     <Icon
@@ -27,6 +30,18 @@ export default createBottomTabNavigator(
                         size={24}
                     />
                 )
+            })
+        },
+        Users:{
+            screen:AttendanceStudent,
+            navigationOptions: () => ({
+                tabBarIcon: () => (
+                    <Icon
+                        name="users"
+                        size={24}
+                    />
+                ),
+                tabBarLabel:"Attendance"
             })
         },
         Account:{

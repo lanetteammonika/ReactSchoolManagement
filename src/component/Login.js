@@ -7,6 +7,7 @@ import {emailEmpty,passwordEmpty,checkEmail} from './../validation/Validation';
 import {loginUser} from './../actions/LoginAction';
 import {connect} from 'react-redux';
 import Contants from '../component/Global';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 class Login extends Component {
@@ -32,6 +33,7 @@ class Login extends Component {
     user_type;
     validateUser=()=>{
 
+
         if(emailEmpty(this.state.email)){
             // this.setState({iconError:'exclamation-circle',emailError:'Require',passwordError:'Require'});
             Alert.alert('Please enter email address')
@@ -43,6 +45,7 @@ class Login extends Component {
             Alert.alert('Please enter password')
         }
         else {
+
             const data={
                 email:this.state.email,
                 password:this.state.password
@@ -59,17 +62,18 @@ class Login extends Component {
 
                 AsyncStorage.setItem('username', this.state.userData.email);
 
+
                 if(res.status == 200){
-                    if (this.props.userDetail.user_type == 'Admin'){
+                    if (this.props.userDetail.response.user_type == 'Admin'){
                         this.props.navigation.navigate('Tab');
-                    }else if (this.props.userDetail.user_type == 'Teacher'){
+                    }else if (this.props.userDetail.response.user_type == 'Teacher'){
                         this.props.navigation.navigate('TeacherTab');
                     }else{
                         this.props.navigation.navigate('ParentTab');
                     }
                 }
             }).catch((err)=>{
-                debugger
+
                 console.log(err);
                 alert("Invalid user");
             })
@@ -94,6 +98,7 @@ class Login extends Component {
 
                 <ImageBackground source={require('./../image/schoolImage.png')}  style={{width: '100%', height: '100%'}}>
 
+                    {/*<KeyboardAwareScrollView>*/}
                     <Image source={require('./../image/app_Icon.png')} style={loginImageStyle} resizeMode="contain"/>
 
                     <Card>
@@ -142,6 +147,7 @@ class Login extends Component {
 
                     </Card>
                     <Text style={[textStyle,{alignSelf:'center'}]}>{this.state.loginMsg}</Text>
+                    {/*</KeyboardAwareScrollView>*/}
                 </ImageBackground>
             </View>
         );

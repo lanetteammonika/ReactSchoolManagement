@@ -3,6 +3,7 @@ import {Text,View,TouchableWithoutFeedback} from 'react-native';
 import {DrawerAction} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from './../../helper/theme/Color';
+
 const Header = (props) =>{
     const {headerStyle,textStyle} = headerStyles;
     return(
@@ -13,7 +14,6 @@ const Header = (props) =>{
                     <Icon name={props.iName} size={25} style={{color:Color.darkColor,marginLeft:5}}/>
                     {/*<Icon style={{paddingRight:5,color:'rgb(43,83,137)'}} name={props.headIcon} size={25}/>*/}
                 </TouchableWithoutFeedback>}
-
             </View>
             <View style={{flex:2,flexDirection:'row',paddingTop:5,alignItems:'center',justifyContent:'center'}}>
                 <Icon style={{paddingRight:5,color:Color.lightColor}} name={props.headIcon} size={25}/>

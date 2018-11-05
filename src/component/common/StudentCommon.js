@@ -32,24 +32,26 @@ class StudentDetail extends Component {
         })
     };
     componentDidMount=()=>{
+
         this.displayStudent();
         this.getData();
     };
 
 
     render() {
+
         return (
         <View style={{backgroundColor:'white',flex:1}}>
-            {this.props.date &&
-            <Text style={styles.textStyle}>{this.props.date}</Text>}
+            {/*{this.props.getStudents.response.user_type &&*/}
+            {/*<Text style={styles.textStyle}>{this.props.getStudents.response.user_type}</Text>}*/}
             <FlatList
                 data={this.props.data}
                 renderItem={this.props.renderItem}
                 keyExtractor={this.props.keyExtractor}
+                style={{flex:1}}
             />
             {this.props.done == 1&& <Text style={{color:'green',fontSize:20,marginBottom:20,alignSelf:'center'}}>Attendance Done</Text>}
         </View>
-
         )
 }
 }

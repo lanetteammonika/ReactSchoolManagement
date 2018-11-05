@@ -20,12 +20,12 @@ export const registrationUser=(user)=>{
     return(dispatch,getState)=>{
         return callApi(ApiConstant.baseUrl+ApiConstant.signUp,'post',user,{}).then((res)=>{
             return Promise.all([
-                dispatch({
-                    type:USER_DETAIL,
-                    payload:res.data
-                })
+                // dispatch({
+                //     type:USER_DETAIL,
+                //     payload:res.data
+                // })
             ]).then(r=>{
-                return Promise.resolve(res.data)
+                return res.data
             });
         }).catch((err)=>{
             return Promise.reject(err)
@@ -35,8 +35,9 @@ export const registrationUser=(user)=>{
 
 
 export const getUsers=()=>{
+
     return(dispatch,getState)=>{
-        return callApi(ApiConstant.baseUrl+ApiConstant.signUp,'get',{},{}).then((res)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.getAllUser,'get',{},{"Authorization":getState().user.userDetail.token}).then((res)=>{
             dispatch({
                 type:USER_DETAIL,
                 payload:res

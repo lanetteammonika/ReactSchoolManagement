@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,Image,View,SafeAreaView,TouchableOpacity,ScrollView} from 'react-native';
+import {Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
 import {Card,CardSection,Button,Header} from './common/Common';
 import Color from './../helper/theme/Color';
 import {updateUser} from './../actions/ProfileAction';
@@ -12,14 +12,15 @@ class Profile extends Component{
     constructor(props){
         super(props);
         const imgname=ApiConstant.baseUrl+props.userDetail.profile_pic;
-        profileData=this.props.navigation.state.params.data;
+        profileData = props.userDetail;
+        debugger
         this.state={
-            id:profileData.user_id,
-            name:profileData.username||'',
+            id:profileData.response.id,
+            name:profileData.response.first_name||'',
             nameError:'',
-            email:profileData.email||'',
+            email:profileData.response.email||'',
             emailError:'',
-            mno:profileData.mobile_no||'',
+            mno:profileData.response.mobile_no||'',
             mnoError:'',
             iconError:'',
             password:profileData.password||'',
@@ -28,7 +29,7 @@ class Profile extends Component{
             msg:'',
             color:'green',
             isBack:true,
-            usertype:profileData.user_role||'',
+            usertype:profileData.response.user_type||'',
             img:'',
             iName:'chevron-left',
             editable:false,
@@ -114,6 +115,9 @@ class Profile extends Component{
         return(
 
             <SafeAreaView style={{flex:1,backgroundColor: 'white'}}>
+                <ImageBackground source={require('./../image/schoolImage.png')}
+                                 style={{width: '100%', height: '100%'}}>
+
             <ScrollView>
                 <Header
                     headerText="Profile Settings"
@@ -149,16 +153,28 @@ class Profile extends Component{
                             alignItems:'center'
                         }}>
                             <Text style={styles.textSelect}>User Type:</Text>
-                            <Text style={styles.textSelect}>{this.state.usertype}</Text>
+                            <Text style={{
+                                fontSize:18,
+                                left:10,
+                                color:'white',
+                                position: 'relative'}}>{this.state.usertype}</Text>
                         </View>
                     </CardSection>
                     <CardSection>
                         <Button onPress={()=>this.onUpdate()}>Update Profile</Button>
                     </CardSection>
+
+                    {/*<View style={viewStyle}>*/}
+
+                        {/*<Text style={newUserStyle}>New user?</Text>*/}
+                        {/*<TouchableOpacity onPress={()=>this.onUpdate()}>*/}
+                            {/*<Text style={linkStyle}>Register Here</Text>*/}
+                        {/*</TouchableOpacity>*/}
+                    {/*</View>*/}
                 </Card>
             </ScrollView>
+                </ImageBackground>
             </SafeAreaView>
-
         )
     }
 }
@@ -167,7 +183,7 @@ const styles={
         flex:1,
         fontSize:18,
         paddingLeft:5,
-        color:Color.lightColor
+        color:'white'
     },
     imgStyle:{
         height:100,

@@ -24,7 +24,6 @@ export const insertFile=(file)=>{
 
 };
 export const getFile=()=>{
-    debugger;
     return(dispatch,getState)=>{
         return callApi(ApiConstant.baseUrl+ApiConstant.upload,'get',{},{}).then((res)=>{
             dispatch({

@@ -5,42 +5,50 @@ import Welcome from './../../component/Welcome';
 import Students from './../../component/StudentDisplay';
 import Files from './../../component/Files';
 import Users from './../../component/Users';
+import NewsUploads from './../../component/NewsUpload';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from './../theme/Color';
+import AttendanceStudent from './../../component/AttendanceStudent';
+import NewsUpload from './../../component/NewsUpload';
+import AttendanceTeacher from "../../component/AttamdanceTeacher";
+
 export default createBottomTabNavigator(
     {
-
         Students:{
             screen:Students,
-            navigationOptions: () => ({
-                tabBarIcon: () => (
-                    <Icon
-                        name="info"
-                        size={24}
-                    />
-                )
-            })
-        },
-        Files:{
-            screen:Files,
-            navigationOptions: () => ({
-                tabBarIcon: () => (
-                    <Icon
-                        name="upload"
-                        size={24}
-                    />
-                )
-            })
-        },
-        Users:{
-            screen:Users,
+
             navigationOptions: () => ({
                 tabBarIcon: () => (
                     <Icon
                         name="users"
                         size={24}
                     />
-                )
+                ),
+                tabBarLabel:"Users"
+            })
+        },
+        Files:{
+            screen:NewsUpload,
+            navigationOptions: () => ({
+                tabBarIcon: () => (
+                    <Icon
+                        name="upload"
+                        size={24}
+                    />
+                ),
+                tabBarLabel:"News"
+            })
+        },
+        Users:{
+            screen:AttendanceTeacher,
+            navigationOptions: () => ({
+                tabBarIcon: () => (
+                    <Icon
+                        name="users"
+                        size={24}
+                    />
+                ),
+                tabBarLabel:"Attendance"
             })
         },
         Account:{
@@ -51,16 +59,17 @@ export default createBottomTabNavigator(
                         name="user-circle"
                         size={24}
                     />
-                )
+                ),
+                tabBarLabel:"Account"
             })
         }
-
     },
     {
         tabBarOptions: {
             activeTintColor:Color.darkColor,
             inactiveTintColor: 'gray',
-            showIcon:true
+            showIcon:true,
+            showLabel:'222'
         },
         animationEnabled: true,
         swipeEnabled: false,

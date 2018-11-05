@@ -2,48 +2,34 @@ import React,{Component} from 'react';
 import {Text,View,Image,Dimensions,SafeAreaView,ScrollView,TouchableOpacity} from 'react-native';
 import Color from './../helper/theme/Color';
 import {Header} from './common/Common';
-import connect from "react-redux/es/connect/connect";
-import {logout} from "../actions/LoginAction";
+import ScrollableTabView from 'react-native-scrollable-tab-view'
+import NewsList from '../component/NewsList'
+import NotesList from '../component/NotesList'
 
 class Welcome extends Component{
     constructor(props){
         super(props);
+        this.state={
+            index: 0,
+            routes: [
+                { key: 'first', title: 'First' },
+                { key: 'second', title: 'Second' },
+            ],
+        }
     }
-
     render(){
-        const {loginImageStyle,childViewStyle,buttonStyle,textStyle,imgTextStyle}=styles;
         return(
-        <SafeAreaView style={{backgroundColor:'white',flex:1}}>
-            <Header headerText="Home" headIcon="home"/>
-            <Text style={imgTextStyle}>Welcome {this.props.userDetail && this.props.userDetail.response.first_name}..!</Text>
-            <ScrollView
-                horizontal={true}
-                style={styles.viewStyle}
-                automaticallyAdjustContentInsets={false}
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-            >
-
-                <View style={childViewStyle}>
-                    <View style={{flex:3}}>
-                        <Image source={require('./../image/SHome.jpg')} style={loginImageStyle} resizeMode="contain"/>
-                        <Text style={imgTextStyle}>Teacher</Text>
-                        <Text style={imgTextStyle}>
-                            Motivate students to do better in class.
-                        </Text>
-                    </View>
-                </View>
-                <View style={childViewStyle}>
-                    <View style={{flex:3}}>
-                        <Image source={require('./../image/SHome2.jpeg')} style={loginImageStyle} resizeMode="contain"/>
-                        <Text style={imgTextStyle}>Parent</Text>
-                        <Text style={imgTextStyle}>
-                            Know what your child is upto in classroom.
-                        </Text>
-                    </View>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+            <SafeAreaView style={{backgroundColor:'rgb(12,124,179)',flex:1}}>
+                <ScrollableTabView
+                    tabBarUnderlineStyle={{backgroundColor:'#FFF'}}
+                    tabBarBackgroundColor='rgb(12,124,179)'
+                    tabBarActiveTextColor='#FFF'
+                    tabBarInactiveTextColor='darkgray'
+                >
+                    <NewsList tabLabel="News" />
+                    <NotesList tabLabel="Notes" />
+                </ScrollableTabView>
+            </SafeAreaView>
         )
     }
 }
@@ -85,14 +71,4 @@ const styles={
         alignItems:'center',
     }
 };
-// export default Welcome;
-
-
-
-const mapStateToProps = (state) => {
-    return {
-        userDetail: state.user.userDetail
-    };
-};
-
-export default connect(mapStateToProps)(Welcome);
+export default Welcome;

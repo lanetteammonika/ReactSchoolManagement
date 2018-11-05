@@ -2,7 +2,8 @@ import {callApi} from '../services/ApiCall';
 import ApiConstant from '../services/ApiConstant'
 import _ from 'lodash';
 
-import {STUDENT_DETAIL} from "./Type";
+import {ATTENDANCE_DETAIL, STUDENT_DETAIL} from "./Type";
+import {applyMiddleware as dispatch} from "redux";
 
 export const newStudent=(stud)=>{
     return(dispatch,getState)=>{
@@ -14,12 +15,11 @@ export const newStudent=(stud)=>{
         }).catch((err)=>{
         })
     }
-
 };
 
 export const getStudents=()=>{
     return(dispatch,getState)=>{
-        return callApi(ApiConstant.baseUrl+ApiConstant.signIn,'get',{},{}).then((res)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.getAllUser,'get',{},{"Authorization":getState().user.userDetail.token}).then((res)=>{
             dispatch({
                 type:STUDENT_DETAIL,
                 payload:res
@@ -29,14 +29,15 @@ export const getStudents=()=>{
         })
     }
 };
+
 export const deleteStudent=(id)=>{
     return(dispatch,getState)=>{
-        return callApi(ApiConstant.baseUrl+ApiConstant.signIn+`/${id}`,'delete',{},{}).then((res)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.deleteUser,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
             let studentData = getState().stud.studentDetail;
-            let studObject = _.find(studentData, {student_id: id});
+            let studObject = _.find(studentData.response, {id: id.id});
             // let studIndex = studentData.findIndex(studObject);
-            let index = _.findIndex(studentData, studObject);
-            studentData[index].state_temp=1;
+            let index = _.findIndex(studentData.response, studObject);
+            studentData.response[index].is_active == 1 ? studentData.response[index].is_active = 0 : studentData.response[index].is_active = 1;
             dispatch({
                 type:STUDENT_DETAIL,
                 payload:_.cloneDeep(studentData)
@@ -48,3 +49,130 @@ export const deleteStudent=(id)=>{
     }
 };
 
+
+export const deleteAdmin=(id)=>{
+    return(dispatch,getState)=>{
+
+        return callApi(ApiConstant.baseUrl+ApiConstant.deleteUser,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+
+            let studentData = getState().stud.studentDetail;
+            let studObject = _.find(studentData.response, {id: id.id});
+            // let studIndex = studentData.findIndex(studObject);
+            let index = _.findIndex(studentData.response, studObject);
+
+            if (studentData.response[index].is_active == 1){
+                studentData.response[index].is_active = 0
+
+                //Status change for Student
+                for (let i = 0; i<studentData.response.length; i++) {
+                    let obj = studentData.response[i];
+
+                    if (obj.parent_id) {
+                        if (obj.parent_id == id.id) {
+                            studentData.response[i].is_active = 0;
+                        }
+                    }
+                }
+            }else{
+                studentData.response[index].is_active = 1;
+
+                //Status change for Student
+                for (let i = 0; i<studentData.response.length; i++) {
+                    let obj = studentData.response[i];
+
+                    if (obj.parent_id) {
+                        if (obj.parent_id == id.id) {
+                            studentData.response[i].is_active = 1;
+                        }
+                    }
+                }
+            }
+
+            dispatch({
+                type:STUDENT_DETAIL,
+                payload:_.cloneDeep(studentData)
+            });
+            return Promise.resolve(studentData);
+        }).catch((err)=>{
+
+            return Promise.reject(err);
+        })
+    }
+};
+
+
+export const activeByAdmin=(id)=>{
+
+    return(dispatch,getState)=>{
+        return callApi(ApiConstant.baseUrl+ApiConstant.activeUser,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+            let studentData = getState().stud.studentDetail;
+            let studObject = _.find(studentData.response, {id: id.id});
+            // let studIndex = studentData.findIndex(studObject);
+            let index = _.findIndex(studentData.response, studObject);
+
+            if (studentData.response[index].is_active == 1){
+                studentData.response[index].is_active = 0
+            }else{
+                studentData.response[index].is_active = 1;
+            }
+
+            dispatch({
+                type:STUDENT_DETAIL,
+                payload:_.cloneDeep(studentData)
+            });
+            return Promise.resolve(studentData);
+        }).catch((err)=>{
+            return Promise.reject(err);
+        })
+    }
+};
+
+
+export const attendance=()=>{
+
+    return(dispatch,getState)=>{
+
+        return callApi(ApiConstant.baseUrl+ApiConstant.attendance,'get',{},{"Authorization":getState().user.userDetail.token}).then((res)=>{
+
+            dispatch({
+                type:ATTENDANCE_DETAIL,
+                payload:_.cloneDeep(res)
+            });
+            return Promise.resolve(res);
+        }).catch((err)=>{
+
+            return Promise.reject(err);
+        })
+    }
+};
+
+export const attendanceByAdmin=(id)=>{
+
+    return(dispatch,getState)=>{
+
+        return callApi(ApiConstant.baseUrl+ApiConstant.attendance,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+
+
+            dispatch({
+                type:ATTENDANCE_DETAIL,
+                payload:_.cloneDeep(res)
+            });
+            return Promise.resolve(res);
+        }).catch((err)=>{
+            return Promise.reject(err);
+        })
+    }
+};
+
+export const postNews=(id)=>{
+
+    return(dispatch,getState)=>{
+
+        return callApi(ApiConstant.baseUrl+ApiConstant.postNews,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+
+            return Promise.resolve(res);
+        }).catch((err)=>{
+            return Promise.reject(err);
+        })
+    }
+};

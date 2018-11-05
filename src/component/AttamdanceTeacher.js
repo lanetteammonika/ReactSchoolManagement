@@ -4,20 +4,21 @@ import DisplayUser from './common/DisplayUser';
 
 
 
-class Teachers extends Component {
+class AttendanceTeacher extends Component {
     constructor(props){
         super(props);
         this.state={
             uid:0,
-            role:'Teacher'
+            role:'Teacher',
+            type:'Attendance',
         }
     }
 
     render() {
         return (
-            <DisplayUser role={this.state.role}/>
+            <DisplayUser style={{top:30}} role={this.state.role} type={this.state.type}/>
         )
     }
 
 }
-export default Teachers;
+export default AttendanceTeacher;

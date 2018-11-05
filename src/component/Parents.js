@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import {Text, View, FlatList,Image,TouchableOpacity,Alert} from 'react-native';
 import DisplayUser from './common/DisplayUser';
+
+
 class Parents extends Component {
     constructor(props){
         super(props);
         this.state={
             uid:0,
-            role:'parent',
+            role:'Parent',
             activeState:'false'
         }
     }
@@ -15,7 +17,6 @@ class Parents extends Component {
         return (
         <DisplayUser role={this.state.role}
         />
-
         )
     }
 

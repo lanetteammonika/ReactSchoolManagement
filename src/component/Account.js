@@ -67,7 +67,7 @@ class Account extends Component {
             settingsTextStyle, viewLinkStyle, profileIcon, profileTextStyle, textBottomStyle
         } = styles;
 
-        const items = [
+        let items = [
             { name: 'Manage Profile', code: '#1abc9c' },
             // { name: 'PETER RIVER', code: '#3498db' }, { name: 'AMETHYST', code: '#9b59b6' },
             // { name: 'WET ASPHALT', code: '#34495e' }, { name: 'GREEN SEA', code: '#16a085' },
@@ -79,6 +79,11 @@ class Account extends Component {
             // { name: 'PUMPKIN', code: '#d35400' }, { name: 'POMEGRANATE', code: '#c0392b' },
             // { name: 'SILVER', code: '#bdc3c7' }, { name: 'ASBESTOS', code: '#7f8c8d' },
         ];
+
+        if (this.props.userDetail.response.user_type == 'Teacher'){
+            items.push({ name: 'Add Student', code: '#3498db' })
+        }
+
         const items2 = [
             { name: 'Help', code: '#3498db' }, { name: 'Log Out', code: '#9b59b6' }
         ];
@@ -134,7 +139,7 @@ class Account extends Component {
                             <View style={{position:'absolute',top:'40%',width:'100%',height:'60%',backgroundColor:'lightgray'}}>
 
                                 <View style={[settingsStyle]}>
-                                    <Text style={[settingsTextStyle,{ fontWeight: 'bold', fontSize:20}]}>SETTINGS</Text>
+                                    <Text adjustsFontSizeToFit = {true}  style={[settingsTextStyle,{ fontWeight: 'bold', fontSize:15}]}>SETTINGS</Text>
                                 </View>
 
                                 <GridView
@@ -146,7 +151,7 @@ class Account extends Component {
 
                                         <TouchableOpacity style={{ backgroundColor: 'clear' }}
                                         // onPress={this.goToProductDetails}
-                                        onPress={() =>  this.props.navigation.navigate('Student')}>
+                                        onPress={() =>  index === 1 ? this.props.navigation.navigate('AddStudent') : this.props.navigation.navigate('Profile')}>
 
                                             <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
                                                 <Text style={styles.itemName}>{item.name}</Text>
@@ -157,7 +162,7 @@ class Account extends Component {
                                 />
 
                                 <View style={[settingsStyle]}>
-                                    <Text style={[settingsTextStyle,{ fontWeight: 'bold', fontSize:20}]}>HELP</Text>
+                                    <Text adjustsFontSizeToFit = {true} style={[settingsTextStyle,{ fontWeight: 'bold', fontSize:15}]}>HELP</Text>
                                 </View>
 
                                 <GridView
@@ -185,60 +190,6 @@ class Account extends Component {
                                     )}
                                 />
                             </View>
-
-
-                            {/*<TouchableOpacity style={viewLinkStyle} onPress={() => {*/}
-                            {/*this.props.navigation.navigate('Profile', {data: dataArray})*/}
-                            {/*}}>*/}
-                            {/*<View style={viewIconStyle}>*/}
-                            {/*<Icon name="user-circle" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*<View style={viewTextStyle}>*/}
-                            {/*<Text style={profileTextStyle}>Manage Profile</Text>*/}
-                            {/*<Icon style={profileIcon} name="angle-right" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*</TouchableOpacity>*/}
-                            {/*{dataArray.user_role === 'admin' &&*/}
-                            {/*<TouchableOpacity style={viewLinkStyle} onPress={() => {*/}
-                            {/*this.props.navigation.navigate('Student')*/}
-                            {/*}}>*/}
-                            {/*<View style={viewIconStyle}>*/}
-                            {/*<Icon name="user-plus" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*<View style={viewTextStyle}>*/}
-                            {/*<Text style={profileTextStyle}>Add Student</Text>*/}
-                            {/*<Icon style={profileIcon} name="angle-right" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*</TouchableOpacity>}*/}
-
-                            {/*<View style={settingsStyle}>*/}
-                            {/*<Text style={settingsTextStyle}>HELP</Text>*/}
-                            {/*</View>*/}
-                            {/*<TouchableOpacity style={viewLinkStyle} onPress={() => {*/}
-                            {/*this.props.navigation.navigate('Help')*/}
-                            {/*}}>*/}
-                            {/*<View style={viewIconStyle}>*/}
-                            {/*<Icon name="question-circle" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*<View style={viewTextStyle}>*/}
-                            {/*<Text style={profileTextStyle}>Help</Text>*/}
-                            {/*<Icon style={profileIcon} name="angle-right" size={20}/>*/}
-                            {/*</View>*/}
-
-                            {/*</TouchableOpacity>*/}
-                            {/*<TouchableOpacity style={viewLinkStyle} onPress={() => this.props.navigation.navigate('Login')}>*/}
-                            {/*<View style={viewIconStyle}>*/}
-                            {/*<Icon name="sign-out" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*<View style={viewTextStyle}>*/}
-                            {/*<Text style={profileTextStyle}>Log Out</Text>*/}
-                            {/*<Icon style={profileIcon} name="angle-right" size={20}/>*/}
-                            {/*</View>*/}
-                            {/*</TouchableOpacity>*/}
-                            {/*<View style={textBottomStyle}>*/}
-                            {/*<Text>Made with <Icon name="heart" size={15} style={{color: 'red'}}/> in India</Text>*/}
-                            {/*</View>*/}
-
                         </ImageBackground>
                     </View>
                 {/*</View>*/}
@@ -256,17 +207,17 @@ const styles = {
         alignItems: 'center',
         height: '40%',
 
-        borderWidth: 1,
-        borderRadius: 2,
-        borderColor: 'transparent',
-        borderBottomWidth: 0,
-        shadowColor: '#000',
-        shadowOffset: { width: 2, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 1,
-        marginLeft: 5,
-        marginRight: 5,
+        // borderWidth: 1,
+        // borderRadius: 2,
+        // borderColor: 'transparent',
+        // borderBottomWidth: 0,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 2, height: 0 },
+        // shadowOpacity: 0.8,
+        // shadowRadius: 2,
+        // elevation: 1,
+        // marginLeft: 5,
+        // marginRight: 5,
     },
     imgStyle: {
         height: Contants.WindowsWidth * 0.3,
@@ -276,9 +227,9 @@ const styles = {
 
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: Contants.WindowsWidth * 0.15,
-        borderWidth: 2,
-        borderColor:'white',
+        borderRadius:  Contants.isIos && Contants.WindowsWidth * 0.15 ||  Contants.WindowsWidth * 0.6,
+        // borderWidth: 2,
+        // borderColor:'white',
     },
     childViewStyle: {
         // flex: 3,
