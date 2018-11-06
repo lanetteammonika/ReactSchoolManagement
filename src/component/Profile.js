@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
+import {Text, Image, View, SafeAreaView, TouchableOpacity, ScrollView, ImageBackground, Alert} from 'react-native';
 import {Card,CardSection,Button,Header} from './common/Common';
 import Color from './../helper/theme/Color';
 import {updateUser} from './../actions/ProfileAction';
@@ -7,16 +7,19 @@ import Home from './common/Home';
 import {connect} from 'react-redux';
 import ApiConstant from '../services/ApiConstant';
 import ImagePicker from 'react-native-image-picker';
+import {checkEmail, emailEmpty, passwordEmpty} from "../validation/Validation";
 var profileData=[];
 class Profile extends Component{
     constructor(props){
         super(props);
-        const imgname=ApiConstant.baseUrl+props.userDetail.profile_pic;
         profileData = props.userDetail;
+        const imgname=ApiConstant.baseUrl+profileData.response.profile_pic;
+
         debugger
         this.state={
             id:profileData.response.id,
             name:profileData.response.first_name||'',
+            name2:profileData.response.last_name||'',
             nameError:'',
             email:profileData.response.email||'',
             emailError:'',
@@ -42,39 +45,38 @@ class Profile extends Component{
         this.props.navigation.goBack();
     };
     onUpdate=()=>{
+        debugger
+        // const [name]=this.state;
 
-        const data={
-            user_id:this.state.id,
-            username:this.state.name,
-            email:this.state.email,
-            mobile_no:this.state.mno,
-            profile_pic:this.state.img
-        };
-        this.props.updateUser(data).then((res)=>{
-            alert("Data updated Success");
-        }).catch((err)=>{
-            alert("Invalid");
-        })
+        if(emailEmpty(this.state.name)){
+            // this.setState({iconError:'exclamation-circle',emailError:'Require',passwordError:'Require'});
+            Alert.alert('Please enter first name')
+        }else if(emailEmpty(this.state.name2)){
+            Alert.alert('Please enter last name')
+        }
+        else if( passwordEmpty(this.state.mno)){
+            Alert.alert('Please enter mobile number')
+        }else {
+            debugger
+            const data = {
+                first_name: this.state.name,
+                last_name: this.state.name2,
+                email: this.state.email,
+                mobile_no: this.state.mno,
+                profile_pic: this.state.img
+            };
+            this.props.updateUser(data).then((res) => {
+                alert("Data updated Success");
+                this.props.navigation.goBack();
+            }).catch((err) => {
+                alert("Invalid");
+            })
+        }
     };
     onChange=(text,key)=>{
         let state=this.state;
         state[key]=text;
-        if(key === 'name'){
-            state['nameError']='';
-            state['msg']='';
-        }
-        else if(key === 'email'){
-            state['emailError']='';
-            state['msg']='';
-        }
-        else if(key === 'password'){
-            state['passwordError']='';
-            state['msg']='';
-        }
-        else if(key === 'mno'){
-            state['mnoError']='';
-            state['msg']='';
-        }
+
         this.setState(this.state);
     };
     showImagePicker=()=>{
@@ -127,42 +129,45 @@ class Profile extends Component{
                     iName={this.state.iName}
                 />
                 <TouchableOpacity onPress={()=>this.showImagePicker()}>
-                    {this.props.userDetail.profile_pic != null?<Image style={[styles.imgStyle,{borderRadius:50,borderColor:'gray',borderWidth:1}]} source={{uri:this.state.imgPath}} resizeMode="cover"/>:
+                    {this.props.userDetail.profile_pic != ''?<Image style={[styles.imgStyle,{borderRadius:50,borderColor:'gray',borderWidth:1}]} source={{uri:this.state.imgPath}} resizeMode="cover"/>:
                     <Image source={require('./../image/User.png')} style={styles.imgStyle}/>}
                 </TouchableOpacity>
                 <Card>
                     <Home
                         name={this.state.name}
-                        nameError={this.state.nameError}
-                        email={this.state.email}
-                        emailError={this.state.emailError}
-                        password={this.state.password}
-                        passwordError={this.state.passwordError}
+                        name2={this.state.name2}
                         mno={this.state.mno}
+                        email={this.state.email}
                         mnoError={this.state.mnoError}
-                        iconError={this.state.iconError}
                         onChange={this.onChange}
                         editable={this.state.editable}
                         secureTextEntry={this.state.secureTextEntry}
                     />
-                    <CardSection>
-                        <View style={{
-                            height:40,
-                            flex:1,
-                            flexDirection:'row',
-                            alignItems:'center'
-                        }}>
-                            <Text style={styles.textSelect}>User Type:</Text>
-                            <Text style={{
-                                fontSize:18,
-                                left:10,
-                                color:'white',
-                                position: 'relative'}}>{this.state.usertype}</Text>
-                        </View>
-                    </CardSection>
-                    <CardSection>
+                    {/*<CardSection>*/}
+                        {/*<View style={{*/}
+                            {/*height:40,*/}
+                            {/*flex:1,*/}
+                            {/*flexDirection:'row',*/}
+                            {/*alignItems:'center'*/}
+                        {/*}}>*/}
+                            {/*<Text style={styles.textSelect}>User Type:</Text>*/}
+                            {/*<Text style={{*/}
+                                {/*fontSize:18,*/}
+                                {/*left:10,*/}
+                                {/*color:'white',*/}
+                                {/*position: 'relative'}}>{this.state.usertype}</Text>*/}
+                        {/*</View>*/}
+                    {/*</CardSection>*/}
+                    {/*<CardSection>*/}
+                        {/*<Button onPress={()=>this.onUpdate()}>Update Profile</Button>*/}
+                    {/*</CardSection>*/}
+
+                    <View style={{flexDirection:'row',
+                        alignItems:'center',
+                        justifyContent:'center',
+                        paddingTop:10}}>
                         <Button onPress={()=>this.onUpdate()}>Update Profile</Button>
-                    </CardSection>
+                    </View>
 
                     {/*<View style={viewStyle}>*/}
 
@@ -189,7 +194,7 @@ const styles={
         height:100,
         width:100,
         alignSelf:'center',
-        marginTop:10
+        marginTop:10,
     }
 };
 const mapStateToProps=(state)=>{
@@ -200,3 +205,5 @@ const mapStateToProps=(state)=>{
 export default connect(mapStateToProps,{
     updateUser
 })(Profile);
+
+

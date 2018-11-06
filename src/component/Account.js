@@ -102,8 +102,15 @@ class Account extends Component {
                                          style={{width: '100%', height: '100%'}}>
 
                             <View style={viewStyle}>
-                                <Image style={imgStyle} source={require('./../image/userIcon.png')}
-                                       resizeMode="contain"/>
+
+                                {this.props.userDetail.response.profile_pic == '' && <Image style={imgStyle} source={require('./../image/userIcon.png')}
+                                                                                             resizeMode="cover"/> ||
+                                <Image style={imgStyle} source={{uri:ApiConstant.baseUrl+this.props.userDetail.response.profile_pic}}
+                                                                                             resizeMode="cover"/>}
+
+
+                                {/*<Image style={imgStyle} source={require('./../image/userIcon.png')}*/}
+                                       {/*resizeMode="contain"/>*/}
 
                                 {/*{this.props.userDetail.profile_pic != null ?*/}
                                     {/*<Image style={[imgStyle, {borderRadius: 45, borderColor: 'gray', borderWidth: 1}]}*/}

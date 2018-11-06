@@ -16,5 +16,7 @@ module.exports={
     upload:'file',
     insertNote:'notes',
     getNotes:'notes',
-    getNews:'news'
+    getNews:'news',
+    updateProfile:'users/update',
+    complaint: 'complaint/',
 };

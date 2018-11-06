@@ -16,6 +16,8 @@ import {ATTENDANCE_DETAIL, STUDENT_DETAIL} from "../../actions/Type";
 import {applyMiddleware as dispatch} from "redux";
 import Constant from '../../helper/theme/Value';
 import AttendanceReducer from "../../reducers/AttendanceReducer";
+import ApiConstant from "../../services/ApiConstant";
+import Contants from "../Global";
 
 
 class DisplayUser extends Component {
@@ -95,8 +97,24 @@ class DisplayUser extends Component {
             <View style={{width:Constant.screenWidth-50, alignSelf:'center',
                 backgroundColor:leftColors[random], height:Constant.screenHeight/8, borderRadius:10, borderWidth:0.5, borderColor:'#bdbdbd'}}>
                 <View style={{flexDirection:'row', alignItems:'center',flex:1, paddingLeft:20,paddingRight:20}}>
+
                     <View style={{height:Constant.screenHeight/10,width:Constant.screenHeight/10,
-                        backgroundColor:'#ff0', borderColor:"#000", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}/>
+                        backgroundColor:'transparent', borderColor:"transparent", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}>
+
+                        {/*<Image style={{justifyContent: 'center',*/}
+                            {/*alignItems: 'center'}}*/}
+                               {/*source={item.profile_pic === '' && require('./../image/userIcon.png')*/}
+                        {/*|| {uri:ApiConstant.baseUrl+this.props.userDetail.response.profile_pic}}*/}
+                                                                                    {/*resizeMode="cover"/>*/}
+
+                        {item.profile_pic == '' && <Image style={{justifyContent: 'center',
+                            alignItems: 'center',height:Constant.screenHeight/10,width:Constant.screenHeight/10,borderRadius:  Contants.isIos && Constant.screenHeight/20 || Constant.screenHeight/20}} source={require('./../../image/userIcon.png')}
+                                                                                    resizeMode="cover"/> ||
+                        <Image style={{justifyContent: 'center',
+                            alignItems: 'center',height:Constant.screenHeight/10,width:Constant.screenHeight/10,borderRadius:  Contants.isIos && Constant.screenHeight/20 || Constant.screenHeight/20}} source={{uri:ApiConstant.baseUrl+item.profile_pic}}
+                               resizeMode="cover"/>}
+                    </View>
+
                     <Text style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}}>{`${item.first_name} ${item.last_name}`}</Text>
                    {item.is_active==1?
                         <Switch value={true}
@@ -138,6 +156,7 @@ class DisplayUser extends Component {
     };
 
     renderRowAttandence = ({item, index}) => {
+        debugger
 
         let leftColors = ['#fffda4', '#ffb7be', '#69a0e5', '#35ebe9', '#ff8a93', '#685be9', '#a256f1'];
         let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
@@ -161,7 +180,13 @@ class DisplayUser extends Component {
 
                             let str_Temp = ''
                             if ( Boolean(this.props.attendanceDetail) && Boolean(this.props.attendanceDetail.response)) {
-                                var arrTemp =this.props.attendanceDetail.response.present.split(',');
+                                var arrTemp = [];
+                                let str_Temp = String(this.props.attendanceDetail.response.present)
+                                if (str_Temp.includes(',')){
+                                    arrTemp = this.props.attendanceDetail.response.present.split(',');
+                                }else{
+                                    arrTemp = [this.props.attendanceDetail.response.present]
+                                }
 
 
                                 for (let j = 0; j < arrTemp.length; j++) {
@@ -178,7 +203,13 @@ class DisplayUser extends Component {
                                     str_Temp =  str_Temp  + ',' + item.id
                                 }
                             }else if (Boolean(this.props.attendanceDetail) && Boolean(this.props.attendanceDetail.data)) {
-                                var arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+                                var arrTemp = [];
+                                let str_Temp = String(this.props.attendanceDetail.data.response.present)
+                                if (str_Temp.includes(',')){
+                                    arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+                                }else{
+                                    arrTemp = [this.props.attendanceDetail.data.response.present]
+                                }
 
                                 for (let j = 0; j < arrTemp.length; j++) {
                                     if (j == 0){
@@ -216,16 +247,25 @@ class DisplayUser extends Component {
     };
 
     render() {
+        debugger
         let studentData = _.filter((this.props.studentDetail )
             && this.props.studentDetail.response || [], {user_type:this.props.role});
 
 
+        debugger
         //Manage Attandence Module
         for (let i=0; i<studentData.length; i++){
             let obj = studentData[i];
 
             if (this.props.attendanceDetail && this.props.attendanceDetail.response){
-                var arrTemp = this.props.attendanceDetail.response.present.split(',');
+                var arrTemp = [];
+                let str_Temp = String(this.props.attendanceDetail.response.present)
+
+                if (str_Temp.includes(',')){
+                    arrTemp = this.props.attendanceDetail.response.present.split(',');
+                }else{
+                    arrTemp = [this.props.attendanceDetail.response.present]
+                }
 
                 obj['attendence'] = '0';
                 for (let j=0; j<arrTemp.length; j++){
@@ -236,8 +276,15 @@ class DisplayUser extends Component {
                 }
                 studentData[i] = obj;
 
-            }else if (this.props.attendanceDetail && this.props.attendanceDetail.data){
-                var arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+            }else if (this.props.attendanceDetail && this.props.attendanceDetail.data && this.props.attendanceDetail.data.response){
+                var arrTemp = [];
+                let str_Temp = String(this.props.attendanceDetail.data.response.present)
+
+                if (str_Temp.includes(',')){
+                    arrTemp = this.props.attendanceDetail.data.response.present.split(',');
+                }else{
+                    arrTemp = [this.props.attendanceDetail.data.response.present]
+                }
 
                 obj['attendence'] = '0';
                 for (let j=0; j<arrTemp.length; j++){

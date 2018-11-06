@@ -5,6 +5,7 @@ import Welcome from './../../component/Welcome';
 import DisplayDocument from './../../component/DisplayDocument';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from './../theme/Color';
+import ComplaintView from "../../component/ComplaintView";
 export default createBottomTabNavigator(
     {
         Welcome:{
@@ -19,7 +20,7 @@ export default createBottomTabNavigator(
             })
         },
         Documents:{
-            screen:DisplayDocument,
+            screen:ComplaintView,
             navigationOptions: () => ({
                 tabBarIcon: () => (
                     <Icon
@@ -27,7 +28,7 @@ export default createBottomTabNavigator(
                         size={24}
                     />
                 ),
-                tabBarLabel:"Note"
+                tabBarLabel:"Complaint"
             })
         },
         Account:{

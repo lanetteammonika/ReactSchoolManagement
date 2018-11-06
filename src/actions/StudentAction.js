@@ -176,3 +176,16 @@ export const postNews=(id)=>{
         })
     }
 };
+
+export const postComplain=(id)=>{
+
+    return(dispatch,getState)=>{
+
+        return callApi(ApiConstant.baseUrl+ApiConstant.complaint,'post',id,{"Authorization":getState().user.userDetail.token}).then((res)=>{
+
+            return Promise.resolve(res);
+        }).catch((err)=>{
+            return Promise.reject(err);
+        })
+    }
+};

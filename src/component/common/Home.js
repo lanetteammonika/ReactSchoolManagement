@@ -8,6 +8,7 @@ class Home extends Component{
         super(props);
         this.state={
             name:'',
+            name2:'',
             nameError:'',
             email:'',
             emailError:'',
@@ -30,37 +31,22 @@ class Home extends Component{
                     <CardSection>
                         <Input
                             onChange={(value)=>this.props.onChange(value,'name')}
-                            placeholder="Name"
+                            placeholder="First name"
                             label="Username"
                             keyboardType={'default'}
                             value={this.props.name}
                         />
-                        {this.props.nameError !=="" &&
-                        <Text style={styles.errorStyle}><Icon name={this.props.iconError} size={20}/>{this.props.nameError}</Text>}
+
                     </CardSection>
                     <CardSection>
                         <Input
-                            onChange={(value)=>this.props.onChange(value,'email')}
-                            placeholder="Email"
-                            label="Email"
-                            keyboardType={'email-address'}
-                            value={this.props.email}
-                        />
-                        {this.props.emailError !=="" &&
-                        <Text style={styles.errorStyle}><Icon name={this.props.iconError} size={20}/>{this.props.emailError}</Text>}
-                    </CardSection>
-                    <CardSection>
-                        <Input
-                            onChange={(value)=>this.props.onChange(value,'password')}
-                            secureTextEntry={this.props.secureTextEntry || true}
-                            placeholder="Password"
-                            label="Password"
+                            onChange={(value)=>this.props.onChange(value,'name2')}
+                            placeholder="Last name"
+                            label="Username"
                             keyboardType={'default'}
-                            value={this.props.password}
-                            editable={this.props.editable}
+                            value={this.props.name2}
                         />
-                        {this.props.passwordError !=="" &&
-                        <Text style={styles.errorStyle}><Icon name={this.props.iconError} size={20}/>{this.props.passwordError}</Text>}
+
                     </CardSection>
                     <CardSection>
                         <Input
@@ -70,8 +56,7 @@ class Home extends Component{
                             keyboardType={'decimal-pad'}
                             value={this.props.mno}
                         />
-                        {this.props.mnoError !=="" &&
-                        <Text style={styles.errorStyle}><Icon name={this.props.iconError} size={20}/>{this.props.mnoError}</Text>}
+
                     </CardSection>
                 </View>
 

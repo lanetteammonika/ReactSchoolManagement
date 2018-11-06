@@ -35,11 +35,14 @@ export function callApi(url,type='get',data={},header={},indicator = false) {
                 return Promise.reject(err);
             });
     }else if(type === 'put'){
+        debugger
         return axios.put(url,data,{headers:reqHeader})
             .then((response) => {
+                debugger
                 return Promise.resolve(response);
             })
             .catch((err) => {
+                debugger
                 return Promise.reject(err);
             });
     }
