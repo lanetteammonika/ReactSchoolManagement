@@ -238,7 +238,7 @@ class AddStudent extends Component {
         }];
 
         return (
-            <View>
+            <View style={{flex : 1}}>
                 <ImageBackground source={require('./../image/schoolImage.png')} style={{width: '100%', height: '100%'}}>
                     <KeyboardAwareScrollView>
 
@@ -524,9 +524,8 @@ const styles = {
         fontWeight: 'bold'
     },
     loginImageStyle: {
-        height: '15%',
+        height: 100,
         width: '100%',
-        alignSelf: 'center',
         alignSelf: 'center',
         marginTop: 50,
         marginBottom: 0,

@@ -90,7 +90,7 @@ class DisplayUser extends Component {
     renderRow = ({item, index}) => {
 
         let leftColors = ['#fffda4', '#ffb7be', '#69a0e5', '#35ebe9', '#ff8a93', '#685be9', '#a256f1'];
-        let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+        let random = 1;
 
         // debugger
         return(
@@ -159,22 +159,40 @@ class DisplayUser extends Component {
         debugger
 
         let leftColors = ['#fffda4', '#ffb7be', '#69a0e5', '#35ebe9', '#ff8a93', '#685be9', '#a256f1'];
-        let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+        // let random = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
+        let random = 1;
+
 
         // debugger
         return(
             <View style={{width:Constant.screenWidth-50, alignSelf:'center',
                 backgroundColor:leftColors[random], height:Constant.screenHeight/8, borderRadius:10, borderWidth:0.5, borderColor:'#bdbdbd'}}>
                 <View style={{flexDirection:'row', alignItems:'center',flex:1, paddingLeft:20,paddingRight:20}}>
+
                     <View style={{height:Constant.screenHeight/10,width:Constant.screenHeight/10,
-                        backgroundColor:'#ff0', borderColor:"#000", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}/>
+                        backgroundColor:'transparent', borderColor:"transparent", borderRadius:Constant.screenHeight/20, borderWidth:0.5}}>
+
+                        {/*<Image style={{justifyContent: 'center',*/}
+                        {/*alignItems: 'center'}}*/}
+                        {/*source={item.profile_pic === '' && require('./../image/userIcon.png')*/}
+                        {/*|| {uri:ApiConstant.baseUrl+this.props.userDetail.response.profile_pic}}*/}
+                        {/*resizeMode="cover"/>*/}
+
+                        {item.profile_pic == '' && <Image style={{justifyContent: 'center',
+                            alignItems: 'center',height:Constant.screenHeight/10,width:Constant.screenHeight/10,borderRadius:  Contants.isIos && Constant.screenHeight/20 || Constant.screenHeight/20}} source={require('./../../image/userIcon.png')}
+                                                          resizeMode="cover"/> ||
+                        <Image style={{justifyContent: 'center',
+                            alignItems: 'center',height:Constant.screenHeight/10,width:Constant.screenHeight/10,borderRadius:  Contants.isIos && Constant.screenHeight/20 || Constant.screenHeight/20}} source={{uri:ApiConstant.baseUrl+item.profile_pic}}
+                               resizeMode="cover"/>}
+                    </View>
+
                     <Text style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}}>{`${item.first_name} ${item.last_name}`}</Text>
 
 
                     {item.attendence==1?
                         <View><Text>Present</Text></View>
                        :
-                        <Button color="Black" underlayColor='#fff' style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}} title = 'Attendanc Now' onPress={(value)=>{
+                        <Button color="Black" underlayColor='#fff' style={{flex:1, fontSize:15, fontWeight:'600',paddingLeft:20}} title = {"Present \n Today?"} onPress={(value)=>{
                             this.setState({activeState:value});
 
 

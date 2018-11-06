@@ -20,7 +20,9 @@ class InsertNote extends Component {
 
     onInsertNote = () => {
         this.props.insertNote({title:this.state.title,description:this.state.description}).then((res)=>{
-            console.log(res);
+            this.setState({title:'',description:''})
+
+            Alert.alert('Successfully posted note')
         }).catch((err)=>{
             console.log(err);
         })

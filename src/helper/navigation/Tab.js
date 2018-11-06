@@ -39,6 +39,18 @@ export default createBottomTabNavigator(
                 tabBarLabel:"News"
             })
         },
+        Home:{
+            screen:Welcome,
+            navigationOptions: () => ({
+                tabBarIcon: () => (
+                    <Icon
+                        name="file"
+                        size={24}
+                    />
+                ),
+                tabBarLabel:"Notes"
+            })
+        },
         Users:{
             screen:AttendanceTeacher,
             navigationOptions: () => ({

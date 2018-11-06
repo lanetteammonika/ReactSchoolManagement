@@ -29,7 +29,8 @@ export default createBottomTabNavigator(
                         name="upload"
                         size={24}
                     />
-                )
+                ),
+                tabBarLabel:"Notes"
             })
         },
         Users:{
